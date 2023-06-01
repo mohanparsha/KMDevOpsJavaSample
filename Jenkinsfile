@@ -13,7 +13,7 @@
 		maven 'M3'
 	    }
 	    options { 
-	    //timestamps ()
+	    timestamps ()
 	    buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '5')
 	    }
 
