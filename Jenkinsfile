@@ -1,5 +1,6 @@
-	def server = Artifactory.server 'MyJFrogServer'
+	def server = Artifactory.server('MyJFrogServer')
 	def rtMaven = Artifactory.newMavenBuild()
+	rtMaven.tool = 'M3'
 	def buildInfo
 	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMJavaSample-snapshot-local/'
 	def ARTIFACTORY_VIRTUAL_SNAPSHOT_REPO = 'KMJavaSample-snapshot-local/'
@@ -43,7 +44,7 @@
 				rtMaven.tool = 'M3'
 				rtMaven.deployer snapshotRepo: ARTIFACTORY_LOCAL_SNAPSHOT_REPO, server: server
 				buildInfo = Artifactory.newBuildInfo()
-				rtMaven.run pom: 'pom.xml', goals: 'clean install' , buildInfo: buildInfo
+				rtMaven.run pom: 'pom.xml', goals: 'clean install'
 				//rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
 				//rtMaven.run pom: '/var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/pom.xml', goals: 'clean install'
 			}		
