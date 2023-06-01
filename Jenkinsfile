@@ -49,11 +49,11 @@
 				//rtMaven.run pom: '/var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/pom.xml', goals: 'clean install'
 			}		
 		    }
-		    post {
-		       success {
-			    junit 'target/surefire-reports/**/*.xml'
-			}   
-		    }
+// 		    post {
+// 		       success {
+// 			    junit 'target/surefire-reports/**/*.xml'
+// 			}   
+// 		    }
 		}
 
 		stage('Publish Artifact') {
@@ -76,7 +76,7 @@
 // 		}
 
 	
-		stage ("QA Approval for Deployment") {
+		stage ("QA Approval") {
 		    steps {
 			script {
 				mail from: "mohan.parsha@gmail.com", to: "mohan.parsha@gmail.com", subject: "APPROVAL REQUIRED FOR UAT Release - $JOB_NAME" , body: """Build $BUILD_NUMBER required an approval. Go to $BUILD_URL for more info."""
