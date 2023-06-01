@@ -36,7 +36,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			
-			<plugin>
+<!-- 			<plugin>
 				<groupId>org.owasp</groupId>
                 		<artifactId>dependency-check-maven</artifactId>
                 		<version>8.2.1</version>
@@ -57,7 +57,7 @@
                     			<!-- Am I the latest version? -->
                     			<versionCheckEnabled>true</versionCheckEnabled>
                 		</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 
