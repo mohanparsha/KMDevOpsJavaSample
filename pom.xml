@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>sdktech-demo</artifactId>
+	<artifactId>KMDevOps-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sdktech-demo</name>
 	<description>SDKTech Demo project for Spring Boot</description>
