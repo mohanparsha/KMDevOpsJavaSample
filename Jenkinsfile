@@ -21,7 +21,7 @@
 	    stages {
 		stage('Code Checkout') {
 		    steps {
-			    git 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
+			    git branch: 'withJFrog-Integration', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
 			//git branch: 'sonar', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
 		    }
 		}
@@ -49,11 +49,11 @@
 				//rtMaven.run pom: '/var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/pom.xml', goals: 'clean install'
 			}		
 		    }
-// 		    post {
-// 		       success {
-// 			    junit 'target/surefire-reports/**/*.xml'
-// 			}   
-// 		    }
+		    post {
+		       success {
+			    junit 'target/surefire-reports/**/*.xml'
+			}   
+		    }
 		}
 
 		stage('Publish Artifact') {
@@ -66,50 +66,5 @@
 			}
 		    }
 		}
-
-// 		stage('SAST Scan'){
-// 		    steps{
-// 			   withSonarQubeEnv(installationName: 'MySQ') {
-// 				sh 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
-// 			    }
-// 		    }
-// 		}
-
-	
-		stage ("QA Approval") {
-		    steps {
-			script {
-				mail from: "mohan.parsha@gmail.com", to: "mohan.parsha@gmail.com", subject: "APPROVAL REQUIRED FOR UAT Release - $JOB_NAME" , body: """Build $BUILD_NUMBER required an approval. Go to $BUILD_URL for more info."""
-				def deploymentDelay = input id: 'Deploy', message: 'Release to UAT?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
-				sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
-			}
-		    }
-		}
-
-		stage('QA Release'){
-		    steps{
-			sh 'echo Build Released to QA Environment'
-		    }
-		}
-
-		stage ("UAT Approval") {
-		    steps {
-			script {
-				mail from: "mohan.parsha@gmail.com", to: "mohan.parsha@gmail.com", subject: "APPROVAL REQUIRED FOR UAT Release - $JOB_NAME" , body: """Build $BUILD_NUMBER required an approval. Go to $BUILD_URL for more info."""
-				def deploymentDelay = input id: 'Deploy', message: 'Release to UAT?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
-				sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
-			}
-		    }
-		}
-
-// 	    post {
-// 		always {
-// 			mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br>URL: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "Success: Project name -> ${env.JOB_NAME}", to: "mohan.parsha@gmail.com";
-// 		}
-// 		failure {
-// 			sh 'echo "This will run only if failed"'
-// 			//mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br>URL: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR: Project name -> ${env.JOB_NAME}", to: "mohan.parsha@gmail.com";
-// 		}
-// 	  }
 	}
-	}
+}
