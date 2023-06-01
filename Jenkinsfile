@@ -1,8 +1,8 @@
 def server = Artifactory.server 'MyJFrogServer'
 def rtMaven = Artifactory.newMavenBuild()
 def buildInfo
-def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'sdk-demo-webapp-libs-snapshot-local/'
-def ARTIFACTORY_VIRTUAL_SNAPSHOT_REPO = 'sdk-demo-webapp-libs-snapshot-local/'
+def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMJavaSample-snapshot-local/'
+def ARTIFACTORY_VIRTUAL_SNAPSHOT_REPO = 'KMJavaSample-snapshot-local/'
 
 
 pipeline {
@@ -57,11 +57,11 @@ pipeline {
 	stage('Publish Artifact') {
             steps {
 		    echo "Artifactory Uploaded"
-//                 script {
-// 		        //rtMaven.deployer.deployArtifacts buildInfo
-// 		    	//server.publishBuildInfo buildInfo
-// 			echo "Artifactory Uploaded"
-//                 }
+                script {
+		        //rtMaven.deployer.deployArtifacts buildInfo
+		    	//server.publishBuildInfo buildInfo
+			echo "Artifactory Uploaded"
+                }
             }
         }
         
