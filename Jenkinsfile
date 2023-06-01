@@ -20,7 +20,7 @@
 	    stages {
 		stage('Code Checkout') {
 		    steps {
-		       git url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
+			    git url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
 			//git branch: 'sonar', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
 		    }
 		}
