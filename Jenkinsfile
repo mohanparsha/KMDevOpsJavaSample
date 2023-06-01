@@ -49,11 +49,11 @@
 				//rtMaven.run pom: '/var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/pom.xml', goals: 'clean install'
 			}		
 		    }
-// 		    post {
-// 		       success {
-// 			    junit 'target/surefire-reports/**/*.xml'
-// 			}   
-// 		    }
+		    post {
+		       success {
+			    junit 'target/surefire-reports/**/*.xml'
+			}   
+		    }
 		}
 
 		stage('Publish Artifact') {
@@ -67,13 +67,14 @@
 		    }
 		}
 
-// 		stage('SAST Scan'){
-// 		    steps{
-// 			   withSonarQubeEnv(installationName: 'MySQ') {
-// 				sh 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
-// 			    }
-// 		    }
-// 		}
+		stage('SAST Scan'){
+		    steps{
+			   withSonarQubeEnv(installationName: 'MySQ-Local') {
+				sh 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:4.8.0.2856:sonar'
+				s//h 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+			    }
+		    }
+		}
 
 	
 		stage ("QA Approval") {
