@@ -3,7 +3,7 @@ def rtMaven = Artifactory.newMavenBuild()
 def buildInfo
 def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'sdk-demo-webapp-libs-snapshot-local/'
 def ARTIFACTORY_VIRTUAL_SNAPSHOT_REPO = 'sdk-demo-webapp-libs-snapshot-local/'
-//def SPECTRAL_DSN = credentials('spectral-dsn')
+
 
 pipeline {
     agent any
@@ -21,7 +21,7 @@ pipeline {
     stages {
         stage('Code Checkout') {
             steps {
-               git branch: 'sonar', url: 'https://github.com/mohanparsha/SDKTech-DevOps-Demo.git'
+               git branch: 'sonar', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
             }
         }
 	stage('install Spectral') {
@@ -65,12 +65,12 @@ pipeline {
             }
         }
         
-	stage ('OWASP Dependency-Check Vulnerabilities') {
-	    steps {
-		dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check'  
-   		dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-	    }
-	} 
+// 	stage ('OWASP Dependency-Check Vulnerabilities') {
+// 	    steps {
+// 		dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check'  
+//    		dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+// 	    }
+// 	} 
 	    
         stage('SAST Scan'){
             steps{
@@ -80,30 +80,46 @@ pipeline {
             }
         }
         
-        stage('Building Docker Image'){
-            steps{
-		sh 'sudo chmod +x /var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/mvnw'
-                sh 'sudo docker build -t sdktech-devsecops-demo:$BUILD_NUMBER .'
-                sh 'sudo docker images'
-            }
-        }
+//         stage('Building Docker Image'){
+//             steps{
+// 		sh 'sudo chmod +x /var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/mvnw'
+//                 sh 'sudo docker build -t sdktech-devsecops-demo:$BUILD_NUMBER .'
+//                 sh 'sudo docker images'
+//             }
+//         }
         
-        stage('Vulnerability Scanning'){
-            steps{
-               sh 'sudo trivy image sdktech-devsecops-demo:$BUILD_NUMBER > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
+//         stage('Vulnerability Scanning'){
+//             steps{
+//                sh 'sudo trivy image sdktech-devsecops-demo:$BUILD_NUMBER > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
                
-            }
-        }
+//             }
+//         }
         
-        stage('QA Release'){
-            steps{
-                sh 'sudo docker run --name SDKTech-DevSecOps-Demo-$BUILD_NUMBER -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d sdktech-devsecops-demo:$BUILD_NUMBER'
+//         stage('QA Release'){
+//             steps{
+//                 sh 'sudo docker run --name SDKTech-DevSecOps-Demo-$BUILD_NUMBER -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d sdktech-devsecops-demo:$BUILD_NUMBER'
+//             }
+//         }
+	    
+// 	stage('DAST Scan'){
+//             steps{
+//                 sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://20.244.120.57:9090/ || true'
+//             }
+//         }
+	    
+	stage ("QA Approval for Deployment") {
+            steps {
+                script {
+			mail from: "mohan.parsha@gmail.com", to: "mohan.parsha@gmail.com", subject: "APPROVAL REQUIRED FOR UAT Release - $JOB_NAME" , body: """Build $BUILD_NUMBER required an approval. Go to $BUILD_URL for more info."""
+                    	def deploymentDelay = input id: 'Deploy', message: 'Release to UAT?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
+        	    	sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
+                }
             }
         }
 	    
-	stage('DAST Scan'){
+	stage('QA Release'){
             steps{
-                sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://20.244.120.57:9090/ || true'
+                sh 'echo Build Released to UAT'
             }
         }
 	    
@@ -117,27 +133,27 @@ pipeline {
             }
         }
 	    
-	stage('UAT Release'){
-            steps{
-                sh 'echo Build Released to UAT'
-            }
-        }
+// 	stage('UAT Release'){
+//             steps{
+//                 sh 'echo Build Released to UAT'
+//             }
+//         }
 	    
-	stage ("PROD Approval") {
-            steps {
-                script {
-			mail from: "mohan.parsha@gmail.com", to: "mohan.parsha@gmail.com", subject: "APPROVAL REQUIRED FOR PROD Release - $JOB_NAME" , body: """Build $BUILD_NUMBER required an approval. Go to $BUILD_URL for more info."""
-                    	def deploymentDelay = input id: 'Deploy', message: 'Release to UAT?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
-        	    	sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
-                }
-            }
-        }
+// 	stage ("PROD Approval") {
+//             steps {
+//                 script {
+// 			mail from: "mohan.parsha@gmail.com", to: "mohan.parsha@gmail.com", subject: "APPROVAL REQUIRED FOR PROD Release - $JOB_NAME" , body: """Build $BUILD_NUMBER required an approval. Go to $BUILD_URL for more info."""
+//                     	def deploymentDelay = input id: 'Deploy', message: 'Release to UAT?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
+//         	    	sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
+//                 }
+//             }
+//         }
 	    
-	stage('PROD Release'){
-            steps{
-                sh 'echo Build Released to PROD'
-            }
-        }
+// 	stage('PROD Release'){
+//             steps{
+//                 sh 'echo Build Released to PROD'
+//             }
+//         }
     }
     post {
     	always {
