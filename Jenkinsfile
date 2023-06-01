@@ -38,7 +38,7 @@
 		    }
 		}    
 
-		stage ('Build & Test') {
+		stage ('Build, Test & SBOM') {
 		    steps {
 			script {
 				rtMaven.tool = 'M3'
