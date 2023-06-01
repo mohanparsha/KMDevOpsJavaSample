@@ -43,7 +43,7 @@
 				rtMaven.tool = 'M3'
 				rtMaven.deployer snapshotRepo: ARTIFACTORY_LOCAL_SNAPSHOT_REPO, server: server
 				buildInfo = Artifactory.newBuildInfo()
-				rtMaven.run pom: 'C:/Users/Administrator/AppData/Local/Jenkins/.jenkins/workspace/DevOps-Pipeline-Simple/pom.xml', goals: 'clean install', buildInfo: buildInfo
+				rtMaven.run pom: '/var/lib/jenkins/workspace/DevOps-Pipeline-Simple/pom.xml', goals: 'clean install', buildInfo: buildInfo
 				//rtMaven.run pom: '/var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/pom.xml', goals: 'clean install'
 			}		
 		    }
