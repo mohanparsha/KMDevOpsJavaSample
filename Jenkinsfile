@@ -71,7 +71,7 @@
 		    steps{
 			   withSonarQubeEnv(installationName: 'MySQ-Local') {
 				sh 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:4.8.0.2856:sonar'
-				s//h 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+				//sh 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
 			    }
 		    }
 		}
