@@ -74,6 +74,13 @@
 // 			    }
 // 		    }
 // 		}
+		    
+		stage ('Dep & Vulnerabilities Check ') {
+			steps {
+				dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check'
+				dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+	    		}
+		} 
 
 	
 		stage ("QA Approval") {
