@@ -49,11 +49,11 @@
 				//rtMaven.run pom: '/var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/pom.xml', goals: 'clean install'
 			}		
 		    }
-		    post {
-		       success {
-			    junit 'target/surefire-reports/**/*.xml'
-			}   
-		    }
+// 		    post {
+// 		       success {
+// 			    junit 'target/surefire-reports/**/*.xml'
+// 			}   
+// 		    }
 		}
 
 		stage('Publish Artifact') {
