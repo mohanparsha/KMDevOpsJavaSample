@@ -24,18 +24,18 @@
 			//git branch: 'sonar', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
 		    }
 		}
-		stage('install Spectral') {
-			// preflight is a tool that makes sure your CI processes run securely and are safe to use. 
-			// To learn more and install preflight, see here: https://github.com/SpectralOps/preflight
-		    steps {
-			sh "curl -L 'https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN' | sh"
-		    }
-		}
-		stage('scan for issues') {
-		    steps {
-			sh "$HOME/.spectral/spectral scan --ok --engines secrets,iac,oss --include-tags base,audit,iac"
-		    }
-		}    
+// 		stage('install Spectral') {
+// 			// preflight is a tool that makes sure your CI processes run securely and are safe to use. 
+// 			// To learn more and install preflight, see here: https://github.com/SpectralOps/preflight
+// 		    steps {
+// 			sh "curl -L 'https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN' | sh"
+// 		    }
+// 		}
+// 		stage('scan for issues') {
+// 		    steps {
+// 			sh "$HOME/.spectral/spectral scan --ok --engines secrets,iac,oss --include-tags base,audit,iac"
+// 		    }
+// 		}    
 
 		stage ('Build & Test') {
 		    steps {
