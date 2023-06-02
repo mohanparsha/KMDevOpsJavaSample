@@ -3,6 +3,9 @@
 	rtMaven.tool = 'M3'
 	def buildInfo
 	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMDevOps-JavaSample/'
+	def remote = [:]
+	remote.host = "192.168.29.96"
+	remote.allowAnyHosts = true
 
 	pipeline {
 	    agent any
@@ -89,9 +92,7 @@
 		}
 
 		stage('QA Release'){
-			def remote = [:]
-			remote.host = "192.168.29.96"
-			remote.allowAnyHosts = true
+			
 		    steps{
 			    withCredentials([usernamePassword(credentialsId: 'QAServer', passwordVariable: 'passwd', usernameVariable: 'username')]) {
 				    sshCommand remote: remote, command: 'echo -n "Connected to $remote.host"; done'
