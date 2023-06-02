@@ -68,13 +68,6 @@
 		    }
 		}
 		    
-// 		stage ('Dep & Vulnerabilities Check ') {
-// 			steps {
-// 				dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check'
-// 				dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-// 	    		}
-// 		}
-		    
 		stage('Publish SBOM') {
 			steps {
 				withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
