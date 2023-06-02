@@ -4,7 +4,7 @@
 	def buildInfo
 	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMDevOps-JavaSample/'
 	def remote = [:]
-	remote.name = 'MyServer"
+	remote.name = "MyServer"
 	remote.host = "192.168.29.96"
 	remote.allowAnyHosts = true
 
