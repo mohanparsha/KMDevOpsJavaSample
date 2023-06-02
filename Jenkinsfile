@@ -36,7 +36,7 @@
 		    }
 		}    
 
-		stage ('Build & Test') {
+		stage ('Build, Test & Generate SBOM') {
 		    steps {
 			script {
 				rtMaven.tool = 'M3'
@@ -75,7 +75,7 @@
 // 	    		}
 // 		}
 		    
-		stage('depTrack Publisher') {
+		stage('Publish SBOM') {
 			steps {
 				withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
 					//dependencyTrackPublisher artifact: 'target/bom.xml', projectName: 'KMDevOps-SampleJava', projectVersion: '1.0', synchronous: true, dependencyTrackApiKey: MyDTAPI-Key, projectProperties: [tags: ['kmsdevops-samplejava']]
