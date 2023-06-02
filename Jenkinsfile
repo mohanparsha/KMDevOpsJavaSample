@@ -2,8 +2,7 @@
 	def rtMaven = Artifactory.newMavenBuild()
 	rtMaven.tool = 'M3'
 	def buildInfo
-	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMJavaSample-local-repo/'
-	def ARTIFACTORY_VIRTUAL_SNAPSHOT_REPO = 'KMJavaSample-virtual-repo/'
+	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMDevOps-JavaSample/'
 
 	pipeline {
 	    agent any
@@ -67,13 +66,13 @@
 		    }
 		}
 
-// 		stage('SAST Scan'){
-// 		    steps{
-// 			   withSonarQubeEnv(installationName: 'MySQ') {
-// 				sh 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
-// 			    }
-// 		    }
-// 		}
+		stage('SAST Scan'){
+		    steps{
+			   withSonarQubeEnv(installationName: 'MySQ') {
+				sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=KMSampleJava'
+			    }
+		    }
+		}
 		    
 		stage ('Dep & Vulnerabilities Check ') {
 			steps {
