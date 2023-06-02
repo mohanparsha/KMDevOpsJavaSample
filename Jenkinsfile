@@ -93,15 +93,13 @@
 		}
 
 		stage('QA Release'){
-			withCredentials([usernamePassword(credentialsId: 'QAServer', passwordVariable: 'passwd', usernameVariable: 'username')]) {
-			remote.user = username
-			remote.password = passwd
-			//sshCommand remote: remote, command: 'echo -n "Connected to $remote.host"; done'
-			}
-			
-		    steps{
-			    sshCommand remote: remote, command: 'echo -n "Connected to $remote.host"; done'
-		    }
+			steps{
+				withCredentials([usernamePassword(credentialsId: 'QAServer', passwordVariable: 'passwd', usernameVariable: 'username')]) {
+					remote.user = username
+					remote.password = passwd
+					sshCommand remote: remote, command: 'echo -n "Connected to $remote.host"; done'
+				}
+		    	}
 		}
 
 		stage ("UAT Approval") {
