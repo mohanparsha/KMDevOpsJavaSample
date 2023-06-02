@@ -21,7 +21,6 @@
 		stage('Code Checkout') {
 		    steps {
 			    git branch: 'withJFrog-Secrets-Sonar-Cyclone-depTrack', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
-			//git branch: 'sonar', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
 		    }
 		}
 		stage('Tool Setup') {
@@ -48,11 +47,6 @@
 				//rtMaven.run pom: '/var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/pom.xml', goals: 'clean install'
 			}		
 		    }
-// 		    post {
-// 		       success {
-// 			    junit 'target/surefire-reports/**/*.xml'
-// 			}   
-// 		    }
 		}
 
 		stage('Publish Artifact') {
@@ -74,12 +68,12 @@
 		    }
 		}
 		    
-		stage ('Dep & Vulnerabilities Check ') {
-			steps {
-				dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check'
-				dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-	    		}
-		}
+// 		stage ('Dep & Vulnerabilities Check ') {
+// 			steps {
+// 				dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check'
+// 				dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+// 	    		}
+// 		}
 		    
 		stage('depTrack Publisher') {
 			steps {
