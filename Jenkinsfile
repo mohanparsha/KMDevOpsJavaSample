@@ -86,7 +86,7 @@
 		    steps {
 			script {
 				mail from: "mohan.parsha@gmail.com", to: "mohan.parsha@gmail.com", subject: "APPROVAL REQUIRED FOR QA Release - $JOB_NAME" , body: """Build $BUILD_NUMBER required an approval. Go to $BUILD_URL for more info."""
-				def deploymentDelay = input id: 'Deploy', message: 'Release to UAT?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
+				def deploymentDelay = input id: 'Deploy', message: 'Release to QA?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
 				sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
 			}
 		    }
@@ -96,6 +96,8 @@
 			
 		    steps{
 			    withCredentials([usernamePassword(credentialsId: 'QAServer', passwordVariable: 'passwd', usernameVariable: 'username')]) {
+				    remote.user = username
+				    remote.password = passwd
 				    sshCommand remote: remote, command: 'echo -n "Connected to $remote.host"; done'
 				}
 			//sh 'echo Build Released to QA Environment'
