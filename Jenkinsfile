@@ -89,8 +89,14 @@
 		}
 
 		stage('QA Release'){
+			def remote = [:]
+			remote.host = "192.168.29.96"
+			remote.allowAnyHosts = true
 		    steps{
-			sh 'echo Build Released to QA Environment'
+			    withCredentials([usernamePassword(credentialsId: 'QAServer', passwordVariable: 'passwd', usernameVariable: 'username')]) {
+				    sshCommand remote: remote, command: 'echo -n "Connected to $remote.host"; done'
+				}
+			//sh 'echo Build Released to QA Environment'
 		    }
 		}
 
