@@ -79,7 +79,15 @@
 				dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check'
 				dependencyCheckPublisher pattern: 'dependency-check-report.xml'
 	    		}
-		} 
+		}
+		    
+		stage('depTrack Publisher') {
+			steps {
+				withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
+					dependencyTrackPublisher artifact: 'target/bom.xml', projectName: 'KMDevOps-SampleJava', projectVersion: '1.0', synchronous: true, dependencyTrackApiKey: MyDTAPI-Key, projectProperties: [tags: ['kmsdevops-samplejava']]
+				}
+            		}
+        	}
 
 	
 		stage ("QA Approval") {
