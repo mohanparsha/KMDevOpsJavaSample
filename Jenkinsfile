@@ -95,7 +95,7 @@
 		stage('QA Release'){
 			steps{
 				withCredentials([usernamePassword(credentialsId: 'QAServer', passwordVariable: 'Passwd', usernameVariable: 'uName')]) {
-					sh 'ssh km@192.168.29.96 curl -u ' + USERNAME + ':' + PASSWORD + ''
+					sh 'ssh km@192.168.29.96 curl -u ' + uName + ':' + Passwd + ''
 // 					remote.user = uName
 // 					remote.password = Passwd
 // 					sshCommand remote: remote, command: 'echo -n "Connected to $remote.host"; done'
