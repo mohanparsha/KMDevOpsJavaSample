@@ -2,8 +2,8 @@
 	def rtMaven = Artifactory.newMavenBuild()
 	rtMaven.tool = 'M3'
 	def buildInfo
-	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMJavaSample-local-repo/'
-	def ARTIFACTORY_VIRTUAL_SNAPSHOT_REPO = 'KMJavaSample-virtual-repo/'
+	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMDevOps-JavaSample/'
+	//def ARTIFACTORY_VIRTUAL_SNAPSHOT_REPO = 'KMJavaSample-virtual-repo/'
 
 	pipeline {
 	    agent any
