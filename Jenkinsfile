@@ -93,14 +93,14 @@
 		}
 
 		stage('QA Release'){
+			withCredentials([usernamePassword(credentialsId: 'QAServer', passwordVariable: 'passwd', usernameVariable: 'username')]) {
+			remote.user = username
+			remote.password = passwd
+			//sshCommand remote: remote, command: 'echo -n "Connected to $remote.host"; done'
+			}
 			
 		    steps{
-			    withCredentials([usernamePassword(credentialsId: 'QAServer', passwordVariable: 'passwd', usernameVariable: 'username')]) {
-				    remote.user = username
-				    remote.password = passwd
-				    sshCommand remote: remote, command: 'echo -n "Connected to $remote.host"; done'
-				}
-			//sh 'echo Build Released to QA Environment'
+			    sshCommand remote: remote, command: 'echo -n "Connected to $remote.host"; done'
 		    }
 		}
 
