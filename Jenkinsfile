@@ -90,8 +90,8 @@
 
 		stage('QA Release'){
 			steps{
-				withCredentials([sshUserPrivateKey(credentialsId: 'UHost', keyFileVariable: 'KEYFile', usernameVariable: 'UNAME')]) {
-					sh "ssh -i KEYFile 192.168.29.96"
+				sshagent(['UHost']) {
+					sh "ls"
 				}
 		    	}
 		}
