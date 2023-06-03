@@ -91,7 +91,7 @@
 		stage('QA Release'){
 			steps{
 				sshagent(['UHost']) {
-					sh "ls"
+					//sh "ls"
 				}
 		    	}
 		}
