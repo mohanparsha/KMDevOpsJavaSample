@@ -91,7 +91,7 @@
 		stage('QA Release'){
 			steps{
 				sshagent(['UHost']) {
-					//sh "ls"
+					sh 'ssh -o StrictHostKeyChecking=no km@192.168.29.96 uname -a'
 				}
 		    	}
 		}
