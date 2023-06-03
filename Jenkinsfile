@@ -91,7 +91,7 @@
 		stage('QA Release'){
 			steps{
 				sshagent(['UHost']) {
-					sh 'scp /bitnami/jenkins/home/workspace/DevOps-Pipeline-withJFrog-Sonar-Secrets-Cyclone-depTrack/target/sdktech-demo-0.0.1-SNAPSHOT.jar ssh -o StrictHostKeyChecking=no km@192.168.29.96:/home/km/KMDevOpsSampleWebApp'
+					sh 'scp target/sdktech-demo-0.0.1-SNAPSHOT.jar ssh -o StrictHostKeyChecking=no km@192.168.29.96:/home/km/KMDevOpsSampleWebApp'
 				}
 		    	}
 		}
