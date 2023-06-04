@@ -76,28 +76,50 @@
 		    
 		stage('Building Docker Image'){
 			steps{
-				sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
-                		sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
-                		sh 'sudo docker images'
+				sshagent(['UHost']) {
+					//sh 'ssh km@192.168.29.96  uname -a'
+					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
+					sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
+                			sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
+                			sh 'sudo docker images'
+				}
+// 				sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
+//                 		sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
+//                 		sh 'sudo docker images'
 			}
 		}
         
         	stage('Vulnerability Scanning'){
 			steps{
-				sh 'sudo trivy image kmdevops-devsecops-demo:$BUILD_NUMBER > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
+				sshagent(['UHost']) {
+					//sh 'ssh km@192.168.29.96  uname -a'
+					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
+					sh 'sudo trivy image kmdevops-devsecops-demo:$BUILD_NUMBER > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
+				}
+				//sh 'sudo trivy image kmdevops-devsecops-demo:$BUILD_NUMBER > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
                		}
         	}
 
 	
 		stage('QA Release'){
 			steps{
-				sh 'sudo docker run --name KMDevOps-DevSecOps-Demo-$BUILD_NUMBER -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops-devsecops-demo:$BUILD_NUMBER'
+				sshagent(['UHost']) {
+					//sh 'ssh km@192.168.29.96  uname -a'
+					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
+					sh 'sudo docker run --name KMDevOps-DevSecOps-Demo-$BUILD_NUMBER -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops-devsecops-demo:$BUILD_NUMBER'
+				}
+				//sh 'sudo docker run --name KMDevOps-DevSecOps-Demo-$BUILD_NUMBER -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops-devsecops-demo:$BUILD_NUMBER'
             		}
         	}
 	    
 		stage('DAST Scan'){
 			steps{
-				sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
+				sshagent(['UHost']) {
+					//sh 'ssh km@192.168.29.96  uname -a'
+					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
+					sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
+				}
+				//sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
             }
         }
 
