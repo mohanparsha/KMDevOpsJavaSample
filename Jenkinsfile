@@ -20,7 +20,7 @@
 	    stages {
 		stage('Code Checkout') {
 		    steps {
-			    git branch: 'withJFrog-Secrets-Sonar-Cyclone-depTrack', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
+			    git branch: 'DevSecOps-Demo', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
 		    }
 		}
 		stage('Tool Setup') {
