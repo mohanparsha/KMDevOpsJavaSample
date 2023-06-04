@@ -32,7 +32,7 @@
 		}
 		stage('Secrets Scan') {
 		    steps {
-			sh "$HOME/.spectral/spectral scan --ok --engines secrets,iac,oss --include-tags base,audit,iac"
+			sh "$HOME/.spectral/spectral scan --all --ok--engines secrets,iac,oss --include-tags base,audit,iac"
 		    }
 		}    
 
@@ -43,8 +43,6 @@
 				rtMaven.deployer snapshotRepo: ARTIFACTORY_LOCAL_SNAPSHOT_REPO, server: server
 				buildInfo = Artifactory.newBuildInfo()
 				rtMaven.run pom: 'pom.xml', goals: 'clean install' , buildInfo: buildInfo
-				//rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
-				//rtMaven.run pom: '/var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/pom.xml', goals: 'clean install'
 			}		
 		    }
 		}
