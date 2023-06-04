@@ -92,7 +92,7 @@
 			steps{
 				sshagent(['UHost']) {
 					//sh 'ssh km@192.168.29.96  uname -a'
-					sh 'scp km@192.168.29.96:/home/km/KMDevOpsSampleWebApp  target/bom.xml'
+					sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
 				}
 		    	}
 		}
