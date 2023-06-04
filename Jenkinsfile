@@ -91,7 +91,7 @@
 		stage('QA Release'){
 			steps{
 				sshagent(['UHost']) {
-					sh 'ssh -o StrictHostKeyChecking=no km@192.168.29.96  scp km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/ target/sdktech-demo-0.0.1-SNAPSHOT.jar'
+					sh 'ssh -o StrictHostKeyChecking=no km@192.168.29.96  scp km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/ target/box.xml'
 					//sh 'ssh -o StrictHostKeyChecking=no km@192.168.29.96 scp target/sdktech-demo-0.0.1-SNAPSHOT.jar km@192.168.29.96:/home/km/KMDevOpsSampleWebApp'
 				}
 		    	}
