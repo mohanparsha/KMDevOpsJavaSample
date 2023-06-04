@@ -32,7 +32,7 @@
 		}
 		stage('Secrets Scan') {
 		    steps {
-			sh "$HOME/.spectral/spectral scan --all --ok--engines secrets,iac,oss --include-tags base,audit,iac"
+			sh "$HOME/.spectral/spectral scan --all --ok --engines secrets,iac,oss --include-tags base,audit,iac"
 		    }
 		}    
 
