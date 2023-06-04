@@ -2,8 +2,7 @@
 	def rtMaven = Artifactory.newMavenBuild()
 	rtMaven.tool = 'M3'
 	def buildInfo
-	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMJavaSample-local-repo/'
-	def ARTIFACTORY_VIRTUAL_SNAPSHOT_REPO = 'KMJavaSample-virtual-repo/'
+	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMDevOps-JavaSample/'
 
 	pipeline {
 	    agent any
@@ -21,8 +20,7 @@
 	    stages {
 		stage('Code Checkout') {
 		    steps {
-			    git 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
-			//git branch: 'sonar', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
+			    git branch: 'withJFrog-Secrets-Sonar-Cyclone-depTrack', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
 		    }
 		}
 		stage('Tool Setup') {
@@ -34,26 +32,19 @@
 		}
 		stage('Secrets Scan') {
 		    steps {
-			sh "$HOME/.spectral/spectral scan --ok --engines secrets,iac,oss --include-tags base,audit,iac"
+			sh "$HOME/.spectral/spectral scan --all --ok --engines secrets,iac,oss --include-tags base,audit,iac"
 		    }
 		}    
 
-		stage ('Build & Test') {
+		stage ('Build, Test & Generate SBOM') {
 		    steps {
 			script {
 				rtMaven.tool = 'M3'
 				rtMaven.deployer snapshotRepo: ARTIFACTORY_LOCAL_SNAPSHOT_REPO, server: server
 				buildInfo = Artifactory.newBuildInfo()
 				rtMaven.run pom: 'pom.xml', goals: 'clean install' , buildInfo: buildInfo
-				//rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
-				//rtMaven.run pom: '/var/lib/jenkins/workspace/SDKTech-DevSecOps-Demo/pom.xml', goals: 'clean install'
 			}		
 		    }
-// 		    post {
-// 		       success {
-// 			    junit 'target/surefire-reports/**/*.xml'
-// 			}   
-// 		    }
 		}
 
 		stage('Publish Artifact') {
@@ -67,30 +58,48 @@
 		    }
 		}
 
-// 		stage('SAST Scan'){
-// 		    steps{
-// 			   withSonarQubeEnv(installationName: 'MySQ') {
-// 				sh 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
-// 			    }
-// 		    }
-// 		}
+		stage('SAST Scan'){
+		    steps{
+			   withSonarQubeEnv(installationName: 'MySQ') {
+				sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=KMSampleJava'
+			    }
+		    }
+		}
+		    
+		stage('Publish SBOM') {
+			steps {
+				withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
+					dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: 'fb9a1312-378d-4bcf-b91c-eb8d57a6e00e', projectName: 'KMDevOps-SampleJava', projectVersion: '1.0', synchronous: false
+				}
+            		}
+        	}
+		    
+		stage('Building Docker Image'){
+			steps{
+				sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
+                		sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
+                		sh 'sudo docker images'
+			}
+		}
+        
+        	stage('Vulnerability Scanning'){
+			steps{
+				sh 'sudo trivy image kmdevops-devsecops-demo:$BUILD_NUMBER > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
+               		}
+        	}
 
 	
-		stage ("QA Approval") {
-		    steps {
-			script {
-				mail from: "mohan.parsha@gmail.com", to: "mohan.parsha@gmail.com", subject: "APPROVAL REQUIRED FOR UAT Release - $JOB_NAME" , body: """Build $BUILD_NUMBER required an approval. Go to $BUILD_URL for more info."""
-				def deploymentDelay = input id: 'Deploy', message: 'Release to UAT?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
-				sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
-			}
-		    }
-		}
-
 		stage('QA Release'){
-		    steps{
-			sh 'echo Build Released to QA Environment'
-		    }
-		}
+			steps{
+				sh 'sudo docker run --name KMDevOps-DevSecOps-Demo-$BUILD_NUMBER -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops-devsecops-demo:$BUILD_NUMBER'
+            		}
+        	}
+	    
+		stage('DAST Scan'){
+			steps{
+				sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
+            }
+        }
 
 		stage ("UAT Approval") {
 		    steps {
