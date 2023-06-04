@@ -76,10 +76,11 @@
 		    
 		stage('Building Docker Image'){
 			steps{
+				sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
 				sshagent(['UHost']) {
 					//sh 'ssh km@192.168.29.96  uname -a'
 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-					sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
+					//sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
                 			sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
                 			sh 'sudo docker images'
 				}
