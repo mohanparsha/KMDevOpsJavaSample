@@ -85,7 +85,8 @@
 							sh """ssh km@192.168.29.96 << EOF
 							sudo docker images
 							sudo docker ps
-							suso docker ps -a
+							sudo docker ps -a
+							sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .
 							exit
 							EOF"""
 						}
