@@ -81,7 +81,14 @@
 				withEnv(["DOCKER_HOST=${qa_docker_host}"]) {
 					sshagent( credentials: ['UHost']) {
 						//sh "ssh km@192.168.29.96  sudo docker images"
-						sh "sudo docker images"
+						script {
+							sh """ssh km@192.168.29.96 << EOF
+							sudo docker images
+							sudo docker ps
+							duso docker ps -a
+							exit
+							EOF"""
+						}
             				}
         			}
 				
