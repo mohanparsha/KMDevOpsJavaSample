@@ -80,7 +80,7 @@
 				sh 'sudo chmod +x /bitnami/jenkins/home/workspace/KMDevOps-DevSecOps-Pipeline/mvnw'
 				withEnv(["DOCKER_HOST=${qa_docker_host}"]) {
 					sshagent( credentials: ['UHost']) {
-						sh "docker images"
+						sh "ssh km@192.168.29.96  docker images"
             				}
         			}
 				
@@ -90,7 +90,7 @@
 // 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
 // 					//sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
 //                 			sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
-//                 			sh 'sudo docker images'
+//                 			sh ' sudo docker images'
 // 				}
 // 				sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
 //                 		sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
