@@ -80,7 +80,7 @@
 				sh 'sudo chmod +x /bitnami/jenkins/home/workspace/KMDevOps-DevSecOps-Pipeline/mvnw'
 				withEnv(["DOCKER_HOST=${qa_docker_host}"]) {
 					sshagent( credentials: ['UHost']) {
-						sh "ssh km@192.168.29.96  docker images"
+						sh "ssh km@192.168.29.96  sudo docker images"
             				}
         			}
 				
