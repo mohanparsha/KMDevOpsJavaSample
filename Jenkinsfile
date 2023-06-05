@@ -85,7 +85,7 @@
 							sh """ssh km@192.168.29.96 << EOF
 							sudo docker images
 							sudo docker ps
-							duso docker ps -a
+							suso docker ps -a
 							exit
 							EOF"""
 						}
