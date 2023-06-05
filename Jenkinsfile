@@ -3,7 +3,7 @@
 	rtMaven.tool = 'M3'
 	def buildInfo
 	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMDevOps-JavaSample/'
-	qa_docker_host = "ssh://bitnami@staging.docker.host"
+	qa_docker_host = "ssh://bitnami@192.168.29.96"
 
 	pipeline {
 	    agent any
