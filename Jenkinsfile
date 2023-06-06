@@ -78,20 +78,24 @@
 		stage('Building Docker Image'){
 			steps{
 				sh 'sudo chmod +x /bitnami/jenkins/home/workspace/KMDevOps-DevSecOps-Pipeline/mvnw'
-				withEnv(["DOCKER_HOST=${qa_docker_host}"]) {
-					sshagent( credentials: ['UHost']) {
-						//sh "ssh km@192.168.29.96  sudo docker images"
-						script {
-							sh """ssh km@192.168.29.96 << EOF
-							sudo docker images
-							sudo docker ps
-							sudo docker ps -a
-							sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .
-							exit
-							EOF"""
-						}
-            				}
-        			}
+				sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
+				sh 'sudo docker images'
+				sh ' sudo docker push kmdevops/kmdevops-devsecops-demo:$BUILD_NUMBER .
+				sh 'sudo docker push mohanparsha/kmdevops:kmdevops-devsecops-demo:$BUILD_NUMBER'
+				
+// 				withEnv(["DOCKER_HOST=${qa_docker_host}"]) {
+// 					sshagent( credentials: ['UHost']) {
+// 						//sh "ssh km@192.168.29.96  sudo docker images"
+// 						script {
+// 							sh """ssh km@192.168.29.96 << EOF
+// 							sudo docker images
+// 							sudo docker ps
+// 							sh 'sudo docker run --name KMDevOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops-demo:$BUILD_NUMBER'
+// 							exit
+// 							EOF"""
+// 						}
+//             				}
+//         			}
 				
 				
 // 				sshagent(['UHost']) {
