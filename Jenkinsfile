@@ -87,7 +87,7 @@
 				//sh 'sudo docker push mohanparsha/kmdevops:kmdevops-devsecops-demo:$BUILD_NUMBER'
 				
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-				sh ' sudo docker push mohanparsha/kmdevops-devsecops-demo:latest'
+				sh ' sudo docker push mohanparsha/kmdevops:latest'
 				
 // 				withDockerRegistry(credentialsId: 'dockerHubLogin', url: '') {
 // 					sh ' sudo docker push mohanparsha/kmdevops-devsecops-demo:$BUILD_NUMBER'
