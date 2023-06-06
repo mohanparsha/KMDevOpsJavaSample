@@ -79,8 +79,8 @@
 		stage('Building Docker Image'){
 			steps{
 				sh 'sudo chmod +x mvnw'
-				sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
-				//sh 'sudo docker build -t kmdevops-devsecops-demo:latest .'
+				sh 'sudo docker build -t kmdevops-devsecops-demo:latest .'
+				//sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
 				sh 'sudo docker images'
 				sh 'docker tag kmdevops-devsecops-demo mohanparsha/kmdevops-devsecops-demo:latest'
 				//sh ' sudo docker push kmdevops-devsecops-demo:$BUILD_NUMBER'
