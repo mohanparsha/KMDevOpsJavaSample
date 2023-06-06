@@ -77,7 +77,7 @@
 		    
 		stage('Building Docker Image'){
 			steps{
-				sh 'sudo chmod +x /bitnami/jenkins/home/workspace/KMDevOps-DevSecOps-Pipeline/mvnw'
+				sh 'sudo chmod +x mvnw'
 				sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
 				//sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
 				sh 'sudo docker images'
