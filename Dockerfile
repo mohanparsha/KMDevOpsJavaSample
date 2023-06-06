@@ -1,11 +1,11 @@
-FROM maven:3.8.6-openjdk-11 as build
+FROM adoptopenjdk/openjdk11:alpine-slim as build
 WORKDIR /workspace/app
 
 COPY mvnw .
 COPY pom.xml .
 COPY src src
 COPY .mvn .mvn
-RUN ./mvnw clean package -am -DskipTests
+RUN ./mvnw install -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM adoptopenjdk/openjdk11:alpine-slim
