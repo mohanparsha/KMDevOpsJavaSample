@@ -4,7 +4,7 @@ WORKDIR /workspace/app
 COPY mvnw .
 COPY pom.xml .
 COPY src src
-
+COPY .mvn .mvn
 RUN ./mvnw install -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
