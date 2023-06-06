@@ -68,13 +68,13 @@
 		    }
 		}
 		    
-		stage('Publish SBOM') {
-			steps {
-				withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
-					//dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: 'fb9a1312-378d-4bcf-b91c-eb8d57a6e00e', projectName: 'KMDevOps-SampleJava', projectVersion: '1.0', synchronous: false
-				}
-            		}
-        	}
+// 		stage('Publish SBOM') {
+// 			steps {
+// 				withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
+// 					//dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: 'fb9a1312-378d-4bcf-b91c-eb8d57a6e00e', projectName: 'KMDevOps-SampleJava', projectVersion: '1.0', synchronous: false
+// 				}
+//             		}
+//         	}
 		    
 		stage('Building Docker Image'){
 			steps{
