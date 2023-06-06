@@ -80,13 +80,14 @@
 			steps{
 				sh 'sudo chmod +x mvnw'
 				sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
-				//sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
+				//sh 'sudo docker build -t kmdevops-devsecops-demo:latest .'
 				sh 'sudo docker images'
+				sh 'docker tag kmdevops-devsecops-demo mohanparsha/kmdevops-devsecops-demo:latest
 				//sh ' sudo docker push kmdevops-devsecops-demo:$BUILD_NUMBER'
 				//sh 'sudo docker push mohanparsha/kmdevops:kmdevops-devsecops-demo:$BUILD_NUMBER'
 				
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-				sh ' sudo docker push mohanparsha/kmdevops-devsecops-demo:$BUILD_NUMBER'
+				sh ' sudo docker push mohanparsha/kmdevops-devsecops-demo:latest'
 				
 // 				withDockerRegistry(credentialsId: 'dockerHubLogin', url: '') {
 // 					sh ' sudo docker push mohanparsha/kmdevops-devsecops-demo:$BUILD_NUMBER'
