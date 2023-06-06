@@ -81,8 +81,12 @@
 				sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
 				//sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
 				sh 'sudo docker images'
-				sh ' sudo docker push kmdevops-devsecops-demo:$BUILD_NUMBER'
+				//sh ' sudo docker push kmdevops-devsecops-demo:$BUILD_NUMBER'
 				//sh 'sudo docker push mohanparsha/kmdevops:kmdevops-devsecops-demo:$BUILD_NUMBER'
+				
+				withDockerRegistry(credentialsId: 'dockerHubLogin', toolName: 'Docker-Local', url: 'https://hub.docker.com') {
+					sh ' sudo docker push kmdevops-devsecops-demo:$BUILD_NUMBER'
+				}
 				
 // 				withEnv(["DOCKER_HOST=${qa_docker_host}"]) {
 // 					sshagent( credentials: ['UHost']) {
