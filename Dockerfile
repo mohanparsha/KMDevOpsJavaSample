@@ -5,7 +5,7 @@ COPY mvnw .
 COPY pom.xml .
 COPY src src
 COPY .mvn .mvn
-RUN ./mvnw clean package install -DskipTests
+RUN ./mvnw clean package -am -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM adoptopenjdk/openjdk11:alpine-slim
