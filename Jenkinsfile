@@ -123,7 +123,7 @@
         
         	stage('Vulnerability Scanning'){
 			steps{
-				sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest'
+				sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
 // 				sshagent(['UHost']) {
 // 					//sh 'ssh km@192.168.29.96  uname -a'
 // 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
@@ -137,7 +137,7 @@
 	
 		stage('QA Release'){
 			steps{
-				sh 'docker -h ssh://km@192.168.29.96 run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
+				sh 'docker --hostname ssh://km@192.168.29.96 run -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
 // 				sshagent(['UHost']) {
 // 					//sh 'ssh km@192.168.29.96  uname -a'
 // 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
