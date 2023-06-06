@@ -126,7 +126,7 @@
 				sshagent(['UHost']) {
 					//sh 'ssh km@192.168.29.96  uname -a'
 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-					sh 'sudo trivy image kmdevops-devsecops-demo:$BUILD_NUMBER > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
+					sh 'sudo trivy image kmdevops-devsecops-demo:latest > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
 				}
 				//sh 'sudo trivy image kmdevops-devsecops-demo:$BUILD_NUMBER > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
                		}
@@ -138,7 +138,7 @@
 				sshagent(['UHost']) {
 					//sh 'ssh km@192.168.29.96  uname -a'
 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-					sh 'sudo docker run --name KMDevOps-DevSecOps-Demo-$BUILD_NUMBER -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops-devsecops-demo:$BUILD_NUMBER'
+					sh 'docker -h ssh://km@192.168.29.96 run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
 				}
 				//sh 'sudo docker run --name KMDevOps-DevSecOps-Demo-$BUILD_NUMBER -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops-devsecops-demo:$BUILD_NUMBER'
             		}
