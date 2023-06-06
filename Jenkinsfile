@@ -84,7 +84,7 @@
 				//sh ' sudo docker push kmdevops-devsecops-demo:$BUILD_NUMBER'
 				//sh 'sudo docker push mohanparsha/kmdevops:kmdevops-devsecops-demo:$BUILD_NUMBER'
 				
-				withDockerRegistry(credentialsId: 'dockerHubLogin', url: 'https://hub.docker.com') {
+				withDockerRegistry(credentialsId: 'dockerHubLogin', url: 'https://hub.docker.com/') {
 					sh ' sudo docker push kmdevops-devsecops-demo:$BUILD_NUMBER'
 				}
 				
