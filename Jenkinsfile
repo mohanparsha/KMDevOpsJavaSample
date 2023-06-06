@@ -123,12 +123,13 @@
         
         	stage('Vulnerability Scanning'){
 			steps{
-				sshagent(['UHost']) {
-					//sh 'ssh km@192.168.29.96  uname -a'
-					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-					//sh 'sudo trivy image kmdevops-devsecops-demo:latest > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
-					sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest'
-				}
+				sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest'
+// 				sshagent(['UHost']) {
+// 					//sh 'ssh km@192.168.29.96  uname -a'
+// 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
+// 					//sh 'sudo trivy image kmdevops-devsecops-demo:latest > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
+// 					sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest'
+// 				}
 				//sh 'sudo trivy image kmdevops-devsecops-demo:$BUILD_NUMBER > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
                		}
         	}
@@ -136,11 +137,12 @@
 	
 		stage('QA Release'){
 			steps{
-				sshagent(['UHost']) {
-					//sh 'ssh km@192.168.29.96  uname -a'
-					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-					sh 'docker -h ssh://km@192.168.29.96 run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
-				}
+				sh 'docker -h ssh://km@192.168.29.96 run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
+// 				sshagent(['UHost']) {
+// 					//sh 'ssh km@192.168.29.96  uname -a'
+// 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
+// 					sh 'docker -h ssh://km@192.168.29.96 run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
+// 				}
 				//sh 'sudo docker run --name KMDevOps-DevSecOps-Demo-$BUILD_NUMBER -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops-devsecops-demo:$BUILD_NUMBER'
             		}
         	}
