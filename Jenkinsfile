@@ -49,13 +49,16 @@
 		    }
 		}
 
-		stage('Publish Artifact') {
+		stage('Publish Artifact & SBOM') {
 		    steps {
 			    echo "Artifactory Uploaded"
 			script {
 				rtMaven.deployer.deployArtifacts buildInfo
 				server.publishBuildInfo buildInfo
 				echo "Artifactory Uploaded"
+			}
+			withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
+				dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: '51159c3b-943b-46bd-a66e-62776f3c3f12', projectName: 'KMDevOps-SampleJava', projectVersion: '1.0', synchronous: false
 			}
 		    }
 		}
@@ -123,7 +126,7 @@
         
         	stage('Vulnerability Scanning'){
 			steps{
-				sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
+				sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-image-scan-$BUILD_NUMBER.txt'
 // 				sshagent(['UHost']) {
 // 					//sh 'ssh km@192.168.29.96  uname -a'
 // 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
@@ -150,10 +153,11 @@
 	    
 		stage('DAST Scan'){
 			steps{
+				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
 				sshagent(['UHost']) {
 					//sh 'ssh km@192.168.29.96  uname -a'
 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-					sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
+					//sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
 				}
 				//sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
             }
