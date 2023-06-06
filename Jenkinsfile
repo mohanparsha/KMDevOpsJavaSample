@@ -9,6 +9,7 @@
 	    agent any
 	    environment {
 		SPECTRAL_DSN = credentials('spectral-dsn')
+		DOCKERHUB_CREDENTIALS = credentials('dockerHubLogin')
 	    }
 	    tools { 
 		maven 'M3'
@@ -84,9 +85,12 @@
 				//sh ' sudo docker push kmdevops-devsecops-demo:$BUILD_NUMBER'
 				//sh 'sudo docker push mohanparsha/kmdevops:kmdevops-devsecops-demo:$BUILD_NUMBER'
 				
-				withDockerRegistry(credentialsId: 'dockerHubLogin', url: '') {
-					sh ' sudo docker push kmdevops-devsecops-demo:$BUILD_NUMBER'
-				}
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+				sh ' sudo docker push mohanparsha/kmdevops-devsecops-demo:$BUILD_NUMBER'
+				
+// 				withDockerRegistry(credentialsId: 'dockerHubLogin', url: '') {
+// 					sh ' sudo docker push mohanparsha/kmdevops-devsecops-demo:$BUILD_NUMBER'
+// 				}
 				
 // 				withEnv(["DOCKER_HOST=${qa_docker_host}"]) {
 // 					sshagent( credentials: ['UHost']) {
