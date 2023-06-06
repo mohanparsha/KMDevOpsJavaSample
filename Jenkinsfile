@@ -60,13 +60,13 @@
 		    }
 		}
 
-		stage('SAST Scan'){
-		    steps{
-			   withSonarQubeEnv(installationName: 'MySQ') {
-				sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=KMSampleJava'
-			    }
-		    }
-		}
+// 		stage('SAST Scan'){
+// 		    steps{
+// 			   withSonarQubeEnv(installationName: 'MySQ') {
+// 				sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=KMSampleJava'
+// 			    }
+// 		    }
+// 		}
 		    
 // 		stage('Publish SBOM') {
 // 			steps {
