@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-slim as build
+FROM maven:3.8.6-openjdk-11 as build
 WORKDIR /workspace/app
 
 COPY mvnw .
