@@ -154,11 +154,11 @@
 		stage('DAST Scan'){
 			steps{
 				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
-				sshagent(['UHost']) {
-					//sh 'ssh km@192.168.29.96  uname -a'
-					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-					//sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
-				}
+// 				sshagent(['UHost']) {
+// 					//sh 'ssh km@192.168.29.96  uname -a'
+// 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
+// 					//sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
+// 				}
 				//sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
             }
         }
