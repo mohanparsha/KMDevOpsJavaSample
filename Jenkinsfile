@@ -25,16 +25,18 @@
 			    git branch: 'DevSecOps-Demo', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
 		    }
 		}
-		stage('Tool Setup') {
-			// preflight is a tool that makes sure your CI processes run securely and are safe to use. 
-			// To learn more and install preflight, see here: https://github.com/SpectralOps/preflight
-		    steps {
-			sh "curl -L 'https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN' | sh"
-		    }
-		}
+		    
+// 		stage('Tool Setup') {
+// 			// preflight is a tool that makes sure your CI processes run securely and are safe to use. 
+// 			// To learn more and install preflight, see here: https://github.com/SpectralOps/preflight
+// 		    steps {
+// 			//sh "curl -L 'https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN' | sh"
+// 		    }
+// 		}
 		stage('Secrets Scan') {
 		    steps {
-			sh "$HOME/.spectral/spectral scan --all --ok --engines secrets,iac,oss --include-tags base,audit,iac"
+			    sh "curl -L 'https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN' | sh"
+			    sh "$HOME/.spectral/spectral scan --all --ok --engines secrets,iac,oss --include-tags base,audit,iac"
 		    }
 		}    
 
@@ -71,7 +73,7 @@
 		    }
 		}
 		    
-		stage('Building Docker Image'){
+		stage('Build Docker Image'){
 			steps{
 				sh 'sudo chmod +x mvnw'
 				sh 'sudo docker build -t kmdevops-devsecops-demo:latest .'
@@ -86,7 +88,7 @@
 			}
 		}
         
-        	stage('Vulnerability Scanning'){
+        	stage('Image Scan'){
 			steps{
 				sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-image-scan-$BUILD_NUMBER.txt'
                		}
@@ -104,7 +106,7 @@
 			steps{
 				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/'
 				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
-				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm OWASP-Zap'
+				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm OWASP-Zap'
             		}
         	}
 
@@ -115,6 +117,26 @@
 				def deploymentDelay = input id: 'Deploy', message: 'Release to UAT?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
 				sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
 			}
+		    }
+		}
+		    
+		stage('UAT Release'){
+			steps{
+				//sh 'docker --hostname ssh://km@192.168.29.96 run -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
+				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
+            		}
+        	}
+		    
+		stage ("Env Cleanup") {
+		    steps {
+			script {
+				mail from: "mohan.parsha@gmail.com", to: "mohan.parsha@gmail.com", subject: "APPROVAL REQUIRED FOR Environment Cleanup - $JOB_NAME" , body: """Build $BUILD_NUMBER required an approval. Go to $BUILD_URL for more info."""
+				def deploymentDelay = input id: 'Deploy', message: 'Approval for Env. Cleanup?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
+				sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
+			}
+			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm OWASP-Zap'
+			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker stop KMDevOps-DevSecOps-Demo'
+			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm KMDevOps-DevSecOps-Demo'
 		    }
 		}
 	}
