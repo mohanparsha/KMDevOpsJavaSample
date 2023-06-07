@@ -79,7 +79,7 @@
         
         	stage('Image Scan'){
 			steps{
-				sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-image-scan-$BUILD_NUMBER.txt'
+				sh 'sudo docker run --name trivy -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-image-scan-$BUILD_NUMBER.txt'
                		}
         	}
 
@@ -121,6 +121,8 @@
 			}
 			sleep 30
 			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm OWASP-Zap'
+			sleep 10
+			sh 'sudo docker rm trivy'
 			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker stop KMDevOps-DevSecOps-Demo'
 			sleep 30
 			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm KMDevOps-DevSecOps-Demo'
