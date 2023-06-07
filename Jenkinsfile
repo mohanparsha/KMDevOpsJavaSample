@@ -3,8 +3,6 @@
 	rtMaven.tool = 'M3'
 	def buildInfo
 	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMDevOps-JavaSample/'
-	qa_docker_host = "ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96"
-	uat_docker_host = "ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96"
 
 	pipeline {
 	    agent any
@@ -88,8 +86,7 @@
 	
 		stage('QA Release'){
 			steps{
-				sh 'sudo qa_docker_host run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
-				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
+				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
             		}
         	}
 	    
