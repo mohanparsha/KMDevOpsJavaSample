@@ -135,8 +135,10 @@
 				def deploymentDelay = input id: 'Deploy', message: 'Approval for Env. Cleanup?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
 				sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
 			}
+			sleep 30
 			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm OWASP-Zap'
 			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker stop KMDevOps-DevSecOps-Demo'
+			sleep 30
 			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm KMDevOps-DevSecOps-Demo'
 		    }
 		}
