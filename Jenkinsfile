@@ -104,6 +104,7 @@
 			steps{
 				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/'
 				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
+				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm OWASP-Zap'
             		}
         	}
 
