@@ -63,21 +63,13 @@
 		    }
 		}
 
-// 		stage('SAST Scan'){
-// 		    steps{
-// 			   withSonarQubeEnv(installationName: 'MySQ') {
-// 				sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=KMSampleJava'
-// 			    }
-// 		    }
-// 		}
-		    
-// 		stage('Publish SBOM') {
-// 			steps {
-// 				withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
-// 					//dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: 'fb9a1312-378d-4bcf-b91c-eb8d57a6e00e', projectName: 'KMDevOps-SampleJava', projectVersion: '1.0', synchronous: false
-// 				}
-//             		}
-//         	}
+		stage('SAST Scan'){
+		    steps{
+			   withSonarQubeEnv(installationName: 'MySQ') {
+				sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=KMSampleJava'
+			    }
+		    }
+		}
 		    
 		stage('Building Docker Image'){
 			steps{
@@ -91,49 +83,12 @@
 				
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 				sh ' sudo docker push mohanparsha/kmdevops:latest'
-				
-// 				withDockerRegistry(credentialsId: 'dockerHubLogin', url: '') {
-// 					sh ' sudo docker push mohanparsha/kmdevops-devsecops-demo:$BUILD_NUMBER'
-// 				}
-				
-// 				withEnv(["DOCKER_HOST=${qa_docker_host}"]) {
-// 					sshagent( credentials: ['UHost']) {
-// 						//sh "ssh km@192.168.29.96  sudo docker images"
-// 						script {
-// 							sh """ssh km@192.168.29.96 << EOF
-// 							sudo docker images
-// 							sudo docker ps
-// 							sh 'sudo docker run --name KMDevOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops-demo:$BUILD_NUMBER'
-// 							exit
-// 							EOF"""
-// 						}
-//             				}
-//         			}
-				
-				
-// 				sshagent(['UHost']) {
-// 					//sh 'ssh km@192.168.29.96  uname -a'
-// 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-// 					//sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
-//                 			sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
-//                 			sh ' sudo docker images'
-// 				}
-// 				sh 'sudo chmod +x /bitnami/jenkins/home/workspace/DevSecOps-Demo/mvnw'
-//                 		sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
-//                 		sh 'sudo docker images'
 			}
 		}
         
         	stage('Vulnerability Scanning'){
 			steps{
 				sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-image-scan-$BUILD_NUMBER.txt'
-// 				sshagent(['UHost']) {
-// 					//sh 'ssh km@192.168.29.96  uname -a'
-// 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-// 					//sh 'sudo trivy image kmdevops-devsecops-demo:latest > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
-// 					sh 'sudo docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest'
-// 				}
-				//sh 'sudo trivy image kmdevops-devsecops-demo:$BUILD_NUMBER > $WORKSPACE/trivy-image-scan-$BUILD_NUMBER.txt'
                		}
         	}
 
@@ -142,24 +97,13 @@
 			steps{
 				//sh 'docker --hostname ssh://km@192.168.29.96 run -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
 				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
-// 				sshagent(['UHost']) {
-// 					//sh 'ssh km@192.168.29.96  uname -a'
-// 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-// 					sh 'docker -h ssh://km@192.168.29.96 run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
-// 				}
-				//sh 'sudo docker run --name KMDevOps-DevSecOps-Demo-$BUILD_NUMBER -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops-devsecops-demo:$BUILD_NUMBER'
             		}
         	}
 	    
 		stage('DAST Scan'){
 			steps{
-				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
-// 				sshagent(['UHost']) {
-// 					//sh 'ssh km@192.168.29.96  uname -a'
-// 					//sh 'scp target/bom.xml km@192.168.29.96:/home/km/KMDevOpsSampleWebApp/'
-// 					//sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
-// 				}
-				//sh 'sudo docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
+				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
+				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
             }
         }
 
@@ -172,15 +116,5 @@
 			}
 		    }
 		}
-
-// 	    post {
-// 		always {
-// 			mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br>URL: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "Success: Project name -> ${env.JOB_NAME}", to: "mohan.parsha@gmail.com";
-// 		}
-// 		failure {
-// 			sh 'echo "This will run only if failed"'
-// 			//mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br>URL: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR: Project name -> ${env.JOB_NAME}", to: "mohan.parsha@gmail.com";
-// 		}
-// 	  }
 	}
 	}
