@@ -122,6 +122,7 @@
 		    
 		stage('UAT Release'){
 			steps{
+				echo 'UAT Released'
 				//sh 'docker --hostname ssh://km@192.168.29.96 run -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
 				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
             		}
