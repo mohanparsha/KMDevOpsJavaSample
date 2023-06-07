@@ -3,7 +3,8 @@
 	rtMaven.tool = 'M3'
 	def buildInfo
 	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMDevOps-JavaSample/'
-	qa_docker_host = "ssh://bitnami@192.168.29.96"
+	qa_docker_host = "ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96"
+	uat_docker_host = "ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96"
 
 	pipeline {
 	    agent any
@@ -25,14 +26,7 @@
 			    git branch: 'DevSecOps-Demo', url: 'https://github.com/mohanparsha/KMDevOpsJavaSample.git'
 		    }
 		}
-		    
-// 		stage('Tool Setup') {
-// 			// preflight is a tool that makes sure your CI processes run securely and are safe to use. 
-// 			// To learn more and install preflight, see here: https://github.com/SpectralOps/preflight
-// 		    steps {
-// 			//sh "curl -L 'https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN' | sh"
-// 		    }
-// 		}
+		
 		stage('Secrets Scan') {
 		    steps {
 			    sh "curl -L 'https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN' | sh"
@@ -53,7 +47,7 @@
 
 		stage('Publish Artifact & SBOM') {
 		    steps {
-			    echo "Artifactory Uploaded"
+			echo "Artifactory Uploaded"
 			script {
 				rtMaven.deployer.deployArtifacts buildInfo
 				server.publishBuildInfo buildInfo
@@ -77,12 +71,9 @@
 			steps{
 				sh 'sudo chmod +x mvnw'
 				sh 'sudo docker build -t kmdevops-devsecops-demo:latest .'
-				//sh 'sudo docker build -t kmdevops-devsecops-demo:$BUILD_NUMBER .'
 				sh 'sudo docker images'
 				sh 'docker tag kmdevops-devsecops-demo mohanparsha/kmdevops:latest'
-				//sh ' sudo docker push kmdevops-devsecops-demo:$BUILD_NUMBER'
-				//sh 'sudo docker push mohanparsha/kmdevops:kmdevops-devsecops-demo:$BUILD_NUMBER'
-				
+				// Push the Image to Docker Hub Public Repo.
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 				sh ' sudo docker push mohanparsha/kmdevops:latest'
 			}
@@ -97,16 +88,14 @@
 	
 		stage('QA Release'){
 			steps{
-				//sh 'docker --hostname ssh://km@192.168.29.96 run -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
-				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
+				sh 'sudo qa_docker_host run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
+				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
             		}
         	}
 	    
 		stage('DAST Scan'){
 			steps{
 				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ -I'
-				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ || true'
-				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm OWASP-Zap'
             		}
         	}
 
@@ -123,8 +112,6 @@
 		stage('UAT Release'){
 			steps{
 				echo 'UAT Released'
-				//sh 'docker --hostname ssh://km@192.168.29.96 run -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d kmdevops:latest'
-				//sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
             		}
         	}
 		    
