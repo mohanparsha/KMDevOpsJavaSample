@@ -121,14 +121,24 @@
 				def deploymentDelay = input id: 'Deploy', message: 'Approval for Env. Cleanup?', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
 				sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
 			}
-			sleep 30
+			// Cleanup Docker Host
+			sleep 15
 			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@$QA_DOCKER_HOST docker rm OWASP-Zap'
-			sleep 10
-			sh 'sudo docker rm trivy'
 			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@$QA_DOCKER_HOST docker stop KMDevOps-DevSecOps-Demo'
-			sleep 30
+			sleep 15
 			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@$QA_DOCKER_HOST docker rm KMDevOps-DevSecOps-Demo'
-			sh 'sudo ssh -i /home/jenkinsuser-dockerhost km@$UAT_REMOTE_HOST ./home/km/KM-Demo-WebApp/stop-sdktech-app'
+			
+			// Clean up Jenkins Host
+			sh 'sudo docker rm trivy'
+			sleep 05
+			sh 'sudo docker rmi -f kmdevops-devsecops-demo'
+			sh 'sudo docker rmi -f mohanparsha/kmdevops'
+			sleep 10
+			sh 'sudo docker system prune -f'
+			
+			// Cleanup Remote Host Deployment
+			sleep 05
+			sh 'sudo ssh -i /home/jenkinsuser-dockerhost km@$UAT_REMOTE_HOST /home/km/KM-Demo-WebApp/stop-sdktech-app'
 		    }
 		}
 	}
