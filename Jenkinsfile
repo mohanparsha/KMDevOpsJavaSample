@@ -86,13 +86,13 @@
 	
 		stage('QA Release'){
 			steps{
-				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
+				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.22 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
             		}
         	}
 	    
 		stage('DAST Scan'){
 			steps{
-				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.96:9090/ -I'
+				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.22 docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.29.22:9090/ -I'
             		}
         	}
 
@@ -120,12 +120,12 @@
 				sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
 			}
 			sleep 30
-			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm OWASP-Zap'
+			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.22 docker rm OWASP-Zap'
 			sleep 10
 			sh 'sudo docker rm trivy'
-			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker stop KMDevOps-DevSecOps-Demo'
+			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.22 docker stop KMDevOps-DevSecOps-Demo'
 			sleep 30
-			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.96 docker rm KMDevOps-DevSecOps-Demo'
+			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.22 docker rm KMDevOps-DevSecOps-Demo'
 		    }
 		}
 	}
