@@ -3,6 +3,7 @@
 	rtMaven.tool = 'M3'
 	def buildInfo
 	def ARTIFACTORY_LOCAL_SNAPSHOT_REPO = 'KMDevOps-JavaSample/'
+	def qa_docker_host = '192.168.29.22'
 
 	pipeline {
 	    agent any
@@ -52,7 +53,7 @@
 				echo "Artifactory Uploaded"
 			}
 			withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
-				dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: '51159c3b-943b-46bd-a66e-62776f3c3f12', projectName: 'KMDevOps-SampleJava', projectVersion: '1.0', synchronous: false
+				dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: 'ba82b083-61f5-4e17-a6e9-4294062affca', projectName: 'KMDevOps-SampleJava', projectVersion: '1.0', synchronous: false
 			}
 		    }
 		}
@@ -86,7 +87,7 @@
 	
 		stage('QA Release'){
 			steps{
-				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@192.168.29.22 docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
+				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@qa_docker_host docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
             		}
         	}
 	    
