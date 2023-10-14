@@ -156,7 +156,7 @@
 			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker rm KMDevOps-DevSecOps-Demo'
 			
 			// Clean up Jenkins Host
-			sh 'sudo docker rm trivy'
+			//sh 'sudo docker rm trivy'
 			sleep 05
 			sh 'sudo docker rmi -f kmdevops-devsecops-demo'
 			sh 'sudo docker rmi -f mohanparsha/kmdevops'
