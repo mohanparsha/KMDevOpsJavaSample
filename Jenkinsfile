@@ -96,13 +96,13 @@
         
         	stage('Image Scan'){
 			steps{
-				sh 'sudo docker run --name trivy -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-image-scan-$BUILD_NUMBER.txt'
+				sh 'sudo docker run --name trivy -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.html'
 				publishHTML target : [
                     		     allowMissing: true,
                     		     alwaysLinkToLastBuild: true,
                     		     keepAll: true,
                     		     reportDir: 'trivy-scan-results',
-                    		     reportFiles: 'trivy-scan-report.html',
+                    		     reportFiles: 'trivy-scan-report-$BUILD_NUMBER.html',
                     		     reportName: 'Trivy Scan Report',
                     		     reportTitles: 'Trivy Scan Results'
                 		]
