@@ -35,11 +35,11 @@
 		stage('SCA') {
       		    steps {
         		    dependencyCheck additionalArguments: ''' 
-                            -o './'
-                            -s './'
-                            -f 'ALL' 
-                            --prettyPrint''', odcInstallation: 'depCheck'
-        
+                        		-o './'
+                            		-s './'
+                            		-f 'ALL' 
+                            		--prettyPrint''', odcInstallation: 'depCheck'
+        		    
         		    dependencyCheckPublisher pattern: 'dependency-check-report.xml'
 		    }
     		}
