@@ -92,7 +92,7 @@
 	    
 		stage('DAST Scan'){
 			steps{
-				sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://$QA_DOCKER_HOST:9090/ -I'
+				sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://$QA_DOCKER_HOST:9090/ -I'
             		}
         	}
 
