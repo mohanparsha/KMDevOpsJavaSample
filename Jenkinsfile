@@ -41,6 +41,12 @@
 				rtMaven.run pom: 'pom.xml', goals: 'clean install' , buildInfo: buildInfo
 			}		
 		    }
+
+		    post {
+		       success {
+			    junit 'target/surefire-reports/**/*.xml'
+			}   
+		    }
 		}
 
 		stage('Publish Artifact & SBOM') {
