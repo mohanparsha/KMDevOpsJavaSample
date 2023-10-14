@@ -57,9 +57,13 @@
 		    }
 		}
 
-		stage ('Dependency-Check Vulnerabilities') {
+		stage ('SCA') {
 	    	    steps {
-			dependencyCheck additionalArguments: '', odcInstallation: 'depcheck'  
+			dependencyCheck additionalArguments: ''' 
+                    		    -o './'
+                    		    -s './'
+                    		    -f 'ALL' 
+                    		    --prettyPrint''', odcInstallation: 'depCheck'  
    		  	dependencyCheckPublisher pattern: 'dependency-check-report.xml'
 	    	    }
 		} 
