@@ -30,7 +30,19 @@
 			    sh "curl -L 'https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN' | sh"
 			    sh "$HOME/.spectral/spectral scan --all --ok --engines secrets,iac,oss --include-tags base,audit,iac"
 		    }
-		}    
+		}
+
+		stage('SCA') {
+      		    steps {
+        		    dependencyCheck additionalArguments: ''' 
+                            -o './'
+                            -s './'
+                            -f 'ALL' 
+                            --prettyPrint''', odcInstallation: 'depCheck'
+        
+        		    dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+		    }
+    		}
 
 		stage ('Build, Test & Generate SBOM') {
 		    steps {
