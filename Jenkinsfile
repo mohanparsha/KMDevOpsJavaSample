@@ -73,7 +73,7 @@
 				sh 'sudo docker tag kmdevops-devsecops-demo mohanparsha/kmdevops:latest'
 				// Push the Image to Docker Hub Public Repo.
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-				sh ' sudo docker push mohanparsha/kmdevops:latest'
+				sh 'sudo docker push mohanparsha/kmdevops:latest'
 			}
 		}
         
