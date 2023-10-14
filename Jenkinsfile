@@ -120,9 +120,9 @@
 		    
 		stage('UAT Release'){
 			steps{
-				sh 'sudo scp -i /home/jenkinsuser-dockerhost /var/lib/jenkins/workspace/KMDevSecOps-Pipeline-Demo/target/sdktech-demo-0.0.1-SNAPSHOT.jar km@$UAT_REMOTE_HOST:/home/km/KM-Demo-WebApp/'
-				sh 'sudo ssh -i /home/jenkinsuser-dockerhost km@$UAT_REMOTE_HOST chmod +x /home/km/KM-Demo-WebApp/*.jar'
-				sh 'sudo ssh -i /home/jenkinsuser-dockerhost km@$UAT_REMOTE_HOST java -jar /home/km/KM-Demo-WebApp/sdktech-demo-0.0.1-SNAPSHOT.jar &'
+				sh 'sudo cp /var/lib/jenkins/workspace/KMDevSecOps-Pipeline-Demo/target/sdktech-demo-0.0.1-SNAPSHOT.jar /home/ubuntu/KM-Demo-WebApp/'
+				sh 'sudo chmod +x /home/km/KM-Demo-WebApp/*.jar'
+				sh 'sudo java -jar /home/km/KM-Demo-WebApp/sdktech-demo-0.0.1-SNAPSHOT.jar &'
             		}
         	}
 		    
@@ -150,7 +150,7 @@
 			
 			// Cleanup Remote Host Deployment
 			sleep 05
-			sh 'sudo ssh -i /home/jenkinsuser-dockerhost km@$UAT_REMOTE_HOST /home/km/KM-Demo-WebApp/stop-sdktech-app'
+			sh 'sudo /home/ubuntu/KM-Demo-WebApp/stop-sdktech-app'
 		    }
 		}
 	}
