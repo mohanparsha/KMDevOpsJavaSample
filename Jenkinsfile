@@ -97,7 +97,7 @@
         	stage('Image Scan'){
 			steps{
 				//sh 'sudo docker run --name trivy -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --format template --template "@contrib/html.tpl" kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.html'
-				sh 'trivy image --format template --template "/var/lib/jenkins/html.tpl" -o trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.html kmdevops-devsecops-demo:latest'
+				sh 'trivy image --format template --template "@/var/lib/jenkins/html.tpl" -o trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.html kmdevops-devsecops-demo:latest'
 				publishHTML target : [
                     		     allowMissing: true,
                     		     alwaysLinkToLastBuild: true,
