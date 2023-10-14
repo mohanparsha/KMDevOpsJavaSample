@@ -134,10 +134,10 @@
 			}
 			// Cleanup Docker Host
 			sleep 15
-			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@$QA_DOCKER_HOST docker rm OWASP-Zap'
-			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@$QA_DOCKER_HOST docker stop KMDevOps-DevSecOps-Demo'
+			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker rm OWASP-Zap'
+			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker stop KMDevOps-DevSecOps-Demo'
 			sleep 15
-			sh 'sudo ssh -i /home/km/jenkins-ubuntu-docker km@$QA_DOCKER_HOST docker rm KMDevOps-DevSecOps-Demo'
+			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker rm KMDevOps-DevSecOps-Demo'
 			
 			// Clean up Jenkins Host
 			sh 'sudo docker rm trivy'
