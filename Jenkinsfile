@@ -119,9 +119,9 @@
 		    
 		stage('UAT Release'){
 			steps{
-				sh 'sudo cp /var/lib/jenkins/workspace/KMDevSecOps-Pipeline-Demo/target/sdktech-demo-0.0.1-SNAPSHOT.jar /home/ubuntu/KM-Demo-WebApp/'
-				sh 'sudo chmod +x /home/km/KM-Demo-WebApp/*.jar'
-				sh 'sudo java -jar /home/km/KM-Demo-WebApp/sdktech-demo-0.0.1-SNAPSHOT.jar &'
+				sh 'sudo cp /var/lib/jenkins/workspace/JavaSpringBootApp/target/sdktech-demo-0.0.1-SNAPSHOT.jar /home/ubuntu/KM-Demo-WebApp/'
+				sh 'sudo chmod +x /home/ubuntu/KM-Demo-WebApp/*.jar'
+				sh 'sudo java -jar /home/ubuntu/KM-Demo-WebApp/sdktech-demo-0.0.1-SNAPSHOT.jar &'
             		}
         	}
 		    
