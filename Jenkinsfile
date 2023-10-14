@@ -32,18 +32,6 @@
 		    }
 		}
 
-		stage('SCA') {
-      		    steps {
-        		    dependencyCheck additionalArguments: ''' 
-                        		-o './'
-                            		-s './'
-                            		-f 'ALL' 
-                            		--prettyPrint''', odcInstallation: 'depCheck'
-        		    
-        		    dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-		    }
-    		}
-
 		stage ('Build, Test & Generate SBOM') {
 		    steps {
 			script {
@@ -68,6 +56,13 @@
 			}
 		    }
 		}
+
+		stage ('Dependency-Check Vulnerabilities') {
+	    	    steps {
+			dependencyCheck additionalArguments: '', odcInstallation: 'depcheck'  
+   		  	dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+	    	    }
+		} 
 
 		stage('SAST Scan'){
 		    steps{
