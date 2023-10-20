@@ -110,6 +110,20 @@
                		}
         	}
 
+		stage('OS Compliance Scan'){
+		    steps{
+			   sh 'lynis audit system | ansi2html >  lynis-scan-results/Lynis-SysAudit-Report-$BUILD_NUMBER.html'
+			   publishHTML (target : [
+                    		     allowMissing: true,
+                    		     alwaysLinkToLastBuild: true,
+                    		     keepAll: true,
+                    		     reportDir: 'lynis-scan-results',
+                    		     reportFiles: 'Lynis-SysAudit-Report-$BUILD_NUMBER.html',
+                    		     reportName: 'Lynis Compliance Audit Report',
+                    		     reportTitles: 'Lynis Compliance Audit Results'
+                		])
+		    }
+		}
 	
 		stage('QA Release'){
 			steps{
