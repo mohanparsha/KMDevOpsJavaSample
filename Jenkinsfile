@@ -112,7 +112,7 @@
 
 		stage('OS Compliance Scan'){
 		    steps{
-			   sh 'lynis audit system | ansi2html >  lynis-scan-results/Lynis-SysAudit-Report-$BUILD_NUMBER.html'
+			   sh 'sudo lynis audit system --pentest | ansi2html >  lynis-scan-results/Lynis-SysAudit-Report-$BUILD_NUMBER.html'
 			   publishHTML (target : [
                     		     allowMissing: true,
                     		     alwaysLinkToLastBuild: true,
