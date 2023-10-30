@@ -82,7 +82,7 @@
 		    }
 		}
 		    
-		stage('Build Docker Image'){
+		stage('Build Container Image'){
 			steps{
 				sh 'sudo chmod +x mvnw'
 				sh 'sudo docker build -t kmdevops-devsecops-demo:latest .'
