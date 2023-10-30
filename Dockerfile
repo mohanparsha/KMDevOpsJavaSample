@@ -1,4 +1,5 @@
-FROM adoptopenjdk/openjdk11:alpine-slim as build
+#FROM adoptopenjdk/openjdk11:alpine-slim as build
+FROM eclipse-temurin:11.0.20.1_1-jdk-ubi9-minimal as build
 #FROM maven:3.8.6-openjdk-11 as build
 
 WORKDIR /workspace/app
