@@ -99,6 +99,8 @@
 				//sh 'sudo docker run --name trivy -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --format template --template "@contrib/html.tpl" kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.html'
 				sh 'sudo trivy image --format template --template "@/usr/local/share/trivy/templates/html.tpl" kmdevops-devsecops-demo:latest -o trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.html'
 				sh 'sudo trivy image -f json kmdevops-devsecops-demo:latest -o trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.json'
+				sh 'sudo docker run --rm -e "DD_URL=http://43.204.86.40:8080" -e "DD_API_KEY=59696caee6a62cb3eae309035367e661ec1e7768" -e "DD_PRODUCT_TYPE_NAME=Dev" -e "DD_PRODUCT_NAME=Trivy_Docker_Scan" \
+				    -e "DD_ENGAGEMENT_NAME=Docker_Scan" -e "DD_TEST_NAME=Trivy Scan" -e "DD_TEST_TYPE_NAME=Trivy Scan" -e "DD_FILE_NAME=trivy-scan-report-$BUILD_NUMBER.json" -v "${WORKSPACE}:/usr/local/dd-import/trivy-scan-report-$BUILD_NUMBER.json" maibornwolff/dd-import:latest dd-reimport-findings.sh'
 				publishHTML (target : [
                     		     allowMissing: true,
                     		     alwaysLinkToLastBuild: true,
