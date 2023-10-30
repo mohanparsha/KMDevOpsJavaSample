@@ -11,7 +11,8 @@ COPY .mvn .mvn
 RUN ./mvnw clean package -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM adoptopenjdk/openjdk11:alpine-slim
+#FROM adoptopenjdk/openjdk11:alpine-slim
+FROM eclipse-temurin:11.0.20.1_1-jdk-ubi9-minimal
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
