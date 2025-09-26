@@ -58,7 +58,7 @@
 				echo "Artifactory Uploaded"
 			}
 			withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
-				dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: '58ddd358-6813-4dab-aaa8-10b80868cbcf', projectName: 'KMDevOps-Java', projectVersion: '1.0.0', synchronous: false
+				dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: '0cfbb98f-9e74-4563-840c-1414b8681199', projectName: 'KMDevOps-Demo', projectVersion: '1.0.0', synchronous: false
 			}
 		    }
 		}
@@ -85,14 +85,14 @@
 		    
 		stage('Build Container Image'){
 			steps{
-				sh 'sudo su -'
-				sh 'sudo chmod +x mvnw'
-				sh 'sudo docker build -t kmdevops-devsecops-demo:latest .'
-				sh 'sudo docker images'
-				sh 'sudo docker tag kmdevops-devsecops-demo mohanparsha/kmdevops:latest'
+				// sh 'sudo su -'
+				sh 'chmod +x mvnw'
+				sh 'docker build -t kmdevops-devsecops-demo:latest .'
+				sh 'docker images'
+				sh 'docker tag kmdevops-devsecops-demo mohanparsha/kmdevops:latest'
 				// Push the Image to Docker Hub Public Repo.
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-				sh 'sudo docker push mohanparsha/kmdevops:latest'
+				sh 'docker push mohanparsha/kmdevops:latest'
 			}
 		}
         
