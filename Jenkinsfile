@@ -149,7 +149,8 @@
 				sh 'sudo su -'
 				//sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://$QA_DOCKER_HOST:9090/ -I'
 				// sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:9090/ -I'
-				sh 'sudo docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:6090/ -I'
+				// sh 'sudo docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:6090/ -I'
+				sh 'sudo docker run --name OWASP-Zap -t kiy0taka/zap2docker-eccube:latest zap-full-scan.py -t http://$QA_DOCKER_HOST:6090/ -I'
             		}
         	}
 
