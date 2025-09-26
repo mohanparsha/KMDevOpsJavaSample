@@ -85,8 +85,8 @@
 		    
 		stage('Build Container Image'){
 			steps{
-				sh 'whoami'
-				sh 'sudo su -'
+				// sh 'whoami'
+				// sh 'sudo su -'
 				sh 'sudo chmod +x mvnw'
 				sh 'sudo docker build -t kmdevops-devsecops-demo:latest .'
 				sh 'sudo docker images'
@@ -99,7 +99,7 @@
         
         	stage('Image Scan'){
 			steps{
-				sh 'sudo su -'
+				// sh 'sudo su -'
 				//sh 'sudo docker run --name trivy -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --format template --template "@contrib/html.tpl" kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.html'
 				sh 'sudo trivy image --format template --template "@/usr/local/share/trivy/templates/html.tpl" kmdevops-devsecops-demo:latest -o trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.html'
 				sh 'sudo trivy image -f json kmdevops-devsecops-demo:latest -o trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.json'
@@ -119,7 +119,7 @@
 
 		stage('OS Compliance Scan'){
 		    steps{
-				sh 'sudo su -'
+				// sh 'sudo su -'
 			    sh 'sudo lynis audit system --pentest | ansi2html >  lynis-scan-results/Lynis-SysAudit-Report-$BUILD_NUMBER.html'
 			    publishHTML (target : [
                     		     allowMissing: true,
@@ -135,14 +135,14 @@
 	
 		stage('QA Release'){
 			steps{
-				sh 'sudo su -'
+				// sh 'sudo su -'
 				sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
             		}
         	}
 	    
 		stage('DAST Scan'){
 			steps{
-				sh 'sudo su -'
+				// sh 'sudo su -'
 				//sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://$QA_DOCKER_HOST:9090/ -I'
 				sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:9090/ -I'
             		}
@@ -176,7 +176,7 @@
 				sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
 			}
 			// Cleanup Docker Host
-			sh 'sudo su -'	
+			// sh 'sudo su -'	
 			sleep 15
 			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker rm OWASP-Zap'
 			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker stop KMDevOps-DevSecOps-Demo'
