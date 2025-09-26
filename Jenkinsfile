@@ -121,7 +121,8 @@
 		stage('OS Compliance Scan'){
 		    steps{
 				sh 'sudo su -'
-			    sh 'sudo lynis audit system --pentest | ansi2html >  ${WORKSPACE}/lynis-scan-results/Lynis-SysAudit-Report-$BUILD_NUMBER.html'
+				sh 'cd /var/lib/jenkins/workspace/DevSecOps-Demo/lynis-scan-results/'
+			    sh 'sudo lynis audit system --pentest | ansi2html >  Lynis-SysAudit-Report-$BUILD_NUMBER.html'
 			    publishHTML (target : [
                     		     allowMissing: true,
                     		     alwaysLinkToLastBuild: true,
