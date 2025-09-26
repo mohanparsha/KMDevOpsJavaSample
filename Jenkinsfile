@@ -119,7 +119,7 @@
 
 		stage('OS Compliance Scan'){
 		    steps{
-				// sh 'sudo su -'
+				sh 'sudo su -'
 			    sh 'sudo lynis audit system --pentest | ansi2html >  lynis-scan-results/Lynis-SysAudit-Report-$BUILD_NUMBER.html'
 			    publishHTML (target : [
                     		     allowMissing: true,
@@ -135,14 +135,14 @@
 	
 		stage('QA Release'){
 			steps{
-				// sh 'sudo su -'
+				sh 'sudo su -'
 				sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
             		}
         	}
 	    
 		stage('DAST Scan'){
 			steps{
-				// sh 'sudo su -'
+				sh 'sudo su -'
 				//sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://$QA_DOCKER_HOST:9090/ -I'
 				sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:9090/ -I'
             		}
@@ -178,6 +178,7 @@
 			// Cleanup Docker Host
 			// sh 'sudo su -'	
 			sleep 15
+			sh 'sudo su -'
 			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker rm OWASP-Zap'
 			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker stop KMDevOps-DevSecOps-Demo'
 			sleep 15
