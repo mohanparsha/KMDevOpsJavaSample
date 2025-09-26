@@ -167,9 +167,9 @@
 		stage('UAT Release'){
 			steps{
 				sh 'sudo su -'
-				sh 'sudo cp /var/lib/jenkins/workspace/JavaSpringBootApp/target/sdktech-demo-0.0.1-SNAPSHOT.jar /home/jenkins/KM-Demo-WebApp/'
-				sh 'sudo chmod +x /home/jenkins/KM-Demo-WebApp/*.jar'
-				sh 'sudo java -jar /home/jenkins/KM-Demo-WebApp/sdktech-demo-0.0.1-SNAPSHOT.jar &'
+				sh 'sudo cp /var/lib/jenkins/workspace/DevSecOps-Demo/target/sdktech-demo-0.0.1-SNAPSHOT.jar /home/km/KM-Demo-WebApp/'
+				sh 'sudo chmod +x /home/km/KM-Demo-WebApp/*.jar'
+				// sh 'sudo java -jar /home/jenkins/KM-Demo-WebApp/sdktech-demo-0.0.1-SNAPSHOT.jar &'
             		}
         	}
 		    
@@ -185,22 +185,22 @@
 			// sh 'sudo su -'	
 			sleep 15
 			sh 'sudo su -'
-			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker rm OWASP-Zap'
-			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker stop KMDevOps-DevSecOps-Demo'
+			sh 'sudo docker rm OWASP-Zap'
+			sh 'sudo docker stop KMDevOps-DevSecOps-Demo'
 			sleep 15
-			sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker rm KMDevOps-DevSecOps-Demo'
+			sh 'sudo docker rm KMDevOps-DevSecOps-Demo'
 			
 			// Clean up Jenkins Host
 			//sh 'sudo docker rm trivy'
 			sleep 05
-			sh 'sudo docker rmi -f kmdevops-devsecops-demo'
-			sh 'sudo docker rmi -f mohanparsha/kmdevops'
+			// sh 'sudo docker rmi -f kmdevops-devsecops-demo'
+			// sh 'sudo docker rmi -f mohanparsha/kmdevops'
 			sleep 10
-			sh 'sudo docker system prune -f'
+			// sh 'sudo docker system prune -f'
 			
 			// Cleanup Remote Host Deployment
 			sleep 05
-			sh 'sudo /home/jenkins/KM-Demo-WebApp/stop-sdktech-app'
+			// sh 'sudo /home/km/KM-Demo-WebApp/stop-sdktech-app'
 		    }
 		}
 	}
