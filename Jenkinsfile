@@ -66,6 +66,7 @@
 		stage ('SCA') {
 	    	    steps {
 			dependencyCheck additionalArguments: ''' 
+								--nvdApiKey 59e342c2-5629-43ac-bf02-3cb4dfbcf21b
                     		    -o './'
                     		    -s './'
                     		    -f 'ALL' 
