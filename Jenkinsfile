@@ -139,7 +139,8 @@
 			steps{
 				sh 'sudo su -'
 				// sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
-				sh 'sudo docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
+				// sh 'sudo docker run --name KMDevOps-DevSecOps-Demo -p 6090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
+				sh 'sudo docker run --name KMDevOps-DevSecOps-Demo -p 6090:9090 --cpus="0.50" --memory="256m" -d mohanparsha/kmdevops:latest'
             		}
         	}
 	    
@@ -148,7 +149,7 @@
 				sh 'sudo su -'
 				//sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://$QA_DOCKER_HOST:9090/ -I'
 				// sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:9090/ -I'
-				sh 'sudo docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:9090/ -I'
+				sh 'sudo docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:6090/ -I'
             		}
         	}
 
