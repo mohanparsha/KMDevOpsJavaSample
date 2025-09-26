@@ -168,7 +168,7 @@
 			steps{
 				sh 'sudo su -'
 				sh 'sudo cp /var/lib/jenkins/workspace/DevSecOps-Demo/target/sdktech-demo-0.0.1-SNAPSHOT.jar /home/km/KM-Demo-WebApp/'
-				sh 'sudo chmod +x /home/km/KM-Demo-WebApp/*.jar'
+				//sh 'sudo chmod +x /home/km/KM-Demo-WebApp/*.jar'
 				// sh 'sudo java -jar /home/jenkins/KM-Demo-WebApp/sdktech-demo-0.0.1-SNAPSHOT.jar &'
             		}
         	}
