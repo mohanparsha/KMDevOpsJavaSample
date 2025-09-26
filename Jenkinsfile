@@ -9,6 +9,7 @@
 	    environment {
 		SPECTRAL_DSN = credentials('spectral-dsn')
 		DOCKERHUB_CREDENTIALS = credentials('dockerHubLogin')
+		QA_DOCKER_HOST = '20.197.42.97'
 	    }
 	    tools { 
 		maven 'M3'
@@ -120,7 +121,7 @@
 		stage('OS Compliance Scan'){
 		    steps{
 				sh 'sudo su -'
-			    sh 'sudo lynis audit system --pentest | ansi2html >  lynis-scan-results/Lynis-SysAudit-Report-$BUILD_NUMBER.html'
+			    sh 'sudo lynis audit system --pentest | ansi2html >  ${WORKSPACE}/lynis-scan-results/Lynis-SysAudit-Report-$BUILD_NUMBER.html'
 			    publishHTML (target : [
                     		     allowMissing: true,
                     		     alwaysLinkToLastBuild: true,
@@ -136,7 +137,8 @@
 		stage('QA Release'){
 			steps{
 				sh 'sudo su -'
-				sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
+				// sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
+				sh 'docker run --name KMDevOps-DevSecOps-Demo -p 9090:9090 --cpus="0.50" --memory="256m" -e PORT=9090 -d mohanparsha/kmdevops:latest'
             		}
         	}
 	    
@@ -144,7 +146,8 @@
 			steps{
 				sh 'sudo su -'
 				//sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-baseline.py -t http://$QA_DOCKER_HOST:9090/ -I'
-				sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:9090/ -I'
+				// sh 'sudo ssh -i /home/ubuntu/PS-QAEnv-Mumbai-Key.pem ubuntu@$QA_DOCKER_HOST docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:9090/ -I'
+				sh 'docker run --name OWASP-Zap -t owasp/zap2docker-stable zap-full-scan.py -t http://$QA_DOCKER_HOST:9090/ -I'
             		}
         	}
 
