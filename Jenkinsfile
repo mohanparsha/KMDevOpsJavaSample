@@ -78,7 +78,7 @@
 		stage('SAST Scan'){
 		    steps{
 			   withSonarQubeEnv(installationName: 'MySQ') {
-				sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=KMSampleJava'
+				sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=KMDevOps-Demo'
 			    }
 		    }
 		}
