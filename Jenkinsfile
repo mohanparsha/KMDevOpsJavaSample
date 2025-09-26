@@ -85,6 +85,7 @@
 		    
 		stage('Build Container Image'){
 			steps{
+				sh 'whoami'
 				sh 'sudo su -'
 				sh 'chmod +x mvnw'
 				sh 'docker build -t kmdevops-devsecops-demo:latest .'
