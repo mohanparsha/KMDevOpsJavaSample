@@ -85,7 +85,7 @@
 		    
 		stage('Build Container Image'){
 			steps{
-				// sh 'sudo su -'
+				sh 'sudo su -'
 				sh 'chmod +x mvnw'
 				sh 'docker build -t kmdevops-devsecops-demo:latest .'
 				sh 'docker images'
