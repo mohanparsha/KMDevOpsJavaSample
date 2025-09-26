@@ -86,7 +86,7 @@
 		stage('Build Container Image'){
 			steps{
 				// sh 'whoami'
-				// sh 'sudo su -'
+				sh 'sudo su -'
 				sh 'sudo chmod +x mvnw'
 				sh 'sudo docker build -t kmdevops-devsecops-demo:latest .'
 				sh 'sudo docker images'
@@ -99,7 +99,7 @@
         
         	stage('Image Scan'){
 			steps{
-				// sh 'sudo su -'
+				sh 'sudo su -'
 				//sh 'sudo docker run --name trivy -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --format template --template "@contrib/html.tpl" kmdevops-devsecops-demo:latest > trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.html'
 				sh 'sudo trivy image --format template --template "@/usr/local/share/trivy/templates/html.tpl" kmdevops-devsecops-demo:latest -o trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.html'
 				sh 'sudo trivy image -f json kmdevops-devsecops-demo:latest -o trivy-scan-results/trivy-scan-report-$BUILD_NUMBER.json'
