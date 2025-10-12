@@ -59,7 +59,7 @@
 				echo "Artifactory Uploaded"
 			}
 			withCredentials([string(credentialsId: 'depTrack', variable: 'MyDTAPI-Key')]) {
-				dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: '0cfbb98f-9e74-4563-840c-1414b8681199', projectName: 'KMDevOps-Demo', projectVersion: '1.0.0', synchronous: false
+				dependencyTrackPublisher artifact: 'target/bom.xml', autoCreateProjects: false, dependencyTrackApiKey: '', dependencyTrackFrontendUrl: '', dependencyTrackUrl: '', projectId: '8b11e42c-a7aa-4833-b57d-a65458c549ae', projectName: 'Ameya-Demo', projectVersion: '1.0.0', synchronous: false
 			}
 		    }
 		}
